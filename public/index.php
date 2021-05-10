@@ -1,3 +1,47 @@
+<?php
+
+require "../vendor/autoload.php";
+
+use Entity\Code;
+use Entity\User;
+use Entity\Language;
+
+$userToto = new User();
+$userToto->id = 1;
+$userToto->nickname = "toto";
+$userToto->password = "pwd1";
+
+$langPHP = new Language();
+$langPHP->id = 1;
+$langPHP->code = "PHP";
+
+$code1 = new Code();
+$code1->id = 1;
+$code1->desc = "Helloword in PHP";
+$code1->content = 'echo "Hello"';
+$code1->created_at = "2021-05-10 14:49:00";
+$code1->user = $userToto;
+$code1->language = $langPHP;
+
+$code2 = new Code();
+$code2->id = 2;
+$code2->desc = "Goodbye in PHP";
+$code2->content = 'echo "Bye"';
+$code2->created_at = "2021-05-10 14:49:00";
+$code2->user = $userToto;
+$code2->language = $langPHP;
+
+$code3 = new Code();
+$code3->id = 3;
+$code3->desc = "What in PHP";
+$code3->content = 'echo "What";';
+$code3->created_at = "2021-05-10 14:49:00";
+$code3->user = $userToto;
+$code3->language = $langPHP;
+
+$items = [$code1, $code2, $code3, $code1, $code2, $code3, $code1, $code2, $code3, $code1, $code2, $code3];
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,194 +79,27 @@
 
         <div class="row masonry-grid">
             <div class="col-md-6 col-lg-4 masonry-column">
-                <div class="card card-block">
-                    <div class="card-body">
-                        <h5 class="card-title"><svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 6.675l-1.8-.6c-.2-.1-.3-.3-.2-.4l.9-1.7c.6-1.2-.7-2.5-1.9-1.9l-1.7.9c-.1.1-.3 0-.4-.2l-.6-1.8c-.4-1.3-2.2-1.3-2.6 0l-.6 1.8c-.1.2-.3.3-.4.2l-1.7-.9c-1.2-.6-2.5.7-1.9 1.9l.9 1.7c.1.1 0 .3-.2.4l-1.8.6c-1.3.4-1.3 2.3 0 2.7l1.8.6c.2 0 .3.2.2.3l-.9 1.7c-.6 1.2.7 2.5 1.9 1.9l1.7-.9c.2-.1.4 0 .4.2l.6 1.8c.4 1.3 2.3 1.3 2.7 0l.6-1.8c.1-.2.3-.3.4-.2l1.7.9c1.2.6 2.5-.7 1.9-1.9l-1-1.7c-.1-.2 0-.4.2-.4l1.8-.6c1.3-.4 1.3-2.2 0-2.6zm-7 3.7c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z" fill="#CCC"></path>
-                            </svg> Hello World <span class="badge badge-secondary lg-cpp">C++</span></h5>
-                        <pre><code class="cpp">#include &#x3C;iostream&#x3E;
+                <?php
+                foreach ($items as $oneItem) {
+                ?>
+                    <div class="card card-block">
+                        <div class="card-body">
+                            <h5 class="card-title"><svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15 6.675l-1.8-.6c-.2-.1-.3-.3-.2-.4l.9-1.7c.6-1.2-.7-2.5-1.9-1.9l-1.7.9c-.1.1-.3 0-.4-.2l-.6-1.8c-.4-1.3-2.2-1.3-2.6 0l-.6 1.8c-.1.2-.3.3-.4.2l-1.7-.9c-1.2-.6-2.5.7-1.9 1.9l.9 1.7c.1.1 0 .3-.2.4l-1.8.6c-1.3.4-1.3 2.3 0 2.7l1.8.6c.2 0 .3.2.2.3l-.9 1.7c-.6 1.2.7 2.5 1.9 1.9l1.7-.9c.2-.1.4 0 .4.2l.6 1.8c.4 1.3 2.3 1.3 2.7 0l.6-1.8c.1-.2.3-.3.4-.2l1.7.9c1.2.6 2.5-.7 1.9-1.9l-1-1.7c-.1-.2 0-.4.2-.4l1.8-.6c1.3-.4 1.3-2.2 0-2.6zm-7 3.7c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z" fill="#CCC"></path>
+                                </svg><span class="badge badge-secondary lg-cpp"><?= $oneItem->language->code ?></span></h5>
+                            <pre><code class="cpp"><?= $oneItem->content ?></code></pre>
+                            <hr />
+                            <p class="card-text">
+                                <?= $oneItem->desc ?>
+                            <footer class="blockquote-footer"><a href=# class="text-decoration-none">@<?= $oneItem->user->nickname ?></a></footer>
+                            </p>
+                            <a href="#" class="btn btn-primary btn-cpy">Copy</a>
+                        </div>
+                    </div>
 
-int main() {
-    std::cout &#x3C;&#x3C; &#x22;Hello World!&#x22;;
-    return 0;
-}
-                        </code></pre>
-                        <hr />
-                        <p class="card-text">
-                            The famous Helloworld in C++.
-                            <footer class="blockquote-footer"><a href=# class="text-decoration-none">@ludk</a></footer>
-                        </p>
-                        <a href="#" class="btn btn-primary btn-cpy">Copy</a>
-                    </div>
-                </div>
-                <div class="card card-block">
-                    <div class="card-body">
-                        <h5 class="card-title"><svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 6.675l-1.8-.6c-.2-.1-.3-.3-.2-.4l.9-1.7c.6-1.2-.7-2.5-1.9-1.9l-1.7.9c-.1.1-.3 0-.4-.2l-.6-1.8c-.4-1.3-2.2-1.3-2.6 0l-.6 1.8c-.1.2-.3.3-.4.2l-1.7-.9c-1.2-.6-2.5.7-1.9 1.9l.9 1.7c.1.1 0 .3-.2.4l-1.8.6c-1.3.4-1.3 2.3 0 2.7l1.8.6c.2 0 .3.2.2.3l-.9 1.7c-.6 1.2.7 2.5 1.9 1.9l1.7-.9c.2-.1.4 0 .4.2l.6 1.8c.4 1.3 2.3 1.3 2.7 0l.6-1.8c.1-.2.3-.3.4-.2l1.7.9c1.2.6 2.5-.7 1.9-1.9l-1-1.7c-.1-.2 0-.4.2-.4l1.8-.6c1.3-.4 1.3-2.2 0-2.6zm-7 3.7c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z" fill="#CCC"></path>
-                            </svg> Foreach Loop <span class="badge badge-secondary lg-php">PHP</span></h5>
-                        <pre><code class="php">&#x3C;?php
-
-foreach ($array as $key => $value) {
-    echo &#x22;$key : $value.\n&#x22;;
-}
-                        </code></pre>
-                        <hr />
-                        <p class="card-text">
-                            A simple foreach example.
-                            <footer class="blockquote-footer"><a href=# class="text-decoration-none">@someone</a>
-                            </footer>
-                        </p>
-                        <a href="#" class="btn btn-primary btn-cpy">Copy</a>
-                    </div>
-                </div>
-                <div class="card card-block">
-                    <div class="card-body">
-                        <h5 class="card-title"><svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 6.675l-1.8-.6c-.2-.1-.3-.3-.2-.4l.9-1.7c.6-1.2-.7-2.5-1.9-1.9l-1.7.9c-.1.1-.3 0-.4-.2l-.6-1.8c-.4-1.3-2.2-1.3-2.6 0l-.6 1.8c-.1.2-.3.3-.4.2l-1.7-.9c-1.2-.6-2.5.7-1.9 1.9l.9 1.7c.1.1 0 .3-.2.4l-1.8.6c-1.3.4-1.3 2.3 0 2.7l1.8.6c.2 0 .3.2.2.3l-.9 1.7c-.6 1.2.7 2.5 1.9 1.9l1.7-.9c.2-.1.4 0 .4.2l.6 1.8c.4 1.3 2.3 1.3 2.7 0l.6-1.8c.1-.2.3-.3.4-.2l1.7.9c1.2.6 2.5-.7 1.9-1.9l-1-1.7c-.1-.2 0-.4.2-.4l1.8-.6c1.3-.4 1.3-2.2 0-2.6zm-7 3.7c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z" fill="#CCC"></path>
-                            </svg> Check os version <span class="badge badge-secondary lg-sh">SH</span>
-                        </h5>
-                        <pre><code class="shell">$ cat /etc/os-release
-                        </code></pre>
-                        <hr />
-                        <p class="card-text">
-                            The easy way to check you os version.
-                            <footer class="blockquote-footer"><a href=# class="text-decoration-none">@linn489</a>
-                            </footer>
-                        </p>
-                        <a href="#" class="btn btn-primary btn-cpy">Copy</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 masonry-column">
-                <div class="card card-block">
-                    <div class="card-body">
-                        <h5 class="card-title"><svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 6.675l-1.8-.6c-.2-.1-.3-.3-.2-.4l.9-1.7c.6-1.2-.7-2.5-1.9-1.9l-1.7.9c-.1.1-.3 0-.4-.2l-.6-1.8c-.4-1.3-2.2-1.3-2.6 0l-.6 1.8c-.1.2-.3.3-.4.2l-1.7-.9c-1.2-.6-2.5.7-1.9 1.9l.9 1.7c.1.1 0 .3-.2.4l-1.8.6c-1.3.4-1.3 2.3 0 2.7l1.8.6c.2 0 .3.2.2.3l-.9 1.7c-.6 1.2.7 2.5 1.9 1.9l1.7-.9c.2-.1.4 0 .4.2l.6 1.8c.4 1.3 2.3 1.3 2.7 0l.6-1.8c.1-.2.3-.3.4-.2l1.7.9c1.2.6 2.5-.7 1.9-1.9l-1-1.7c-.1-.2 0-.4.2-.4l1.8-.6c1.3-.4 1.3-2.2 0-2.6zm-7 3.7c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z" fill="#CCC"></path>
-                            </svg> Bubble Sort <span class="badge badge-secondary lg-python">Py</span>
-                        </h5>
-                        <pre><code class="python">def bubbleSort(arr):
-    n = len(arr)
-    for i in range(n):
-        for j in range(0, n-i-1):
-            if arr[j] &#x3E; arr[j+1] :
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-    return arr
-                        </code></pre>
-                        <hr />
-                        <p class="card-text">
-                            Implementation of Bubble Sort - O(n²).
-                            <footer class="blockquote-footer"><a href=# class="text-decoration-none">@neo7114</a>
-                            </footer>
-                        </p>
-                        <a href="#" class="btn btn-primary btn-cpy">Copy</a>
-                    </div>
-                </div>
-                <div class="card card-block">
-                    <div class="card-body">
-                        <h5 class="card-title"><svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 6.675l-1.8-.6c-.2-.1-.3-.3-.2-.4l.9-1.7c.6-1.2-.7-2.5-1.9-1.9l-1.7.9c-.1.1-.3 0-.4-.2l-.6-1.8c-.4-1.3-2.2-1.3-2.6 0l-.6 1.8c-.1.2-.3.3-.4.2l-1.7-.9c-1.2-.6-2.5.7-1.9 1.9l.9 1.7c.1.1 0 .3-.2.4l-1.8.6c-1.3.4-1.3 2.3 0 2.7l1.8.6c.2 0 .3.2.2.3l-.9 1.7c-.6 1.2.7 2.5 1.9 1.9l1.7-.9c.2-.1.4 0 .4.2l.6 1.8c.4 1.3 2.3 1.3 2.7 0l.6-1.8c.1-.2.3-.3.4-.2l1.7.9c1.2.6 2.5-.7 1.9-1.9l-1-1.7c-.1-.2 0-.4.2-.4l1.8-.6c1.3-.4 1.3-2.2 0-2.6zm-7 3.7c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z" fill="#CCC"></path>
-                            </svg> Async function <span class="badge badge-secondary lg-js">JS</span>
-                        </h5>
-                        <pre><code class="javascript">function delayedFunction() {
-    alert('Hello');
-}
-setTimeout(delayedFunction, 3000);
-                        </code></pre>
-                        <hr />
-                        <p class="card-text">
-                            A delayed call in javascript.
-                            <footer class="blockquote-footer"><a href=# class="text-decoration-none">@jsman</a>
-                            </footer>
-                        </p>
-                        <a href="#" class="btn btn-primary btn-cpy">Copy</a>
-                    </div>
-                </div>
-                <div class="card card-block">
-                    <div class="card-body">
-                        <h5 class="card-title"><svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 6.675l-1.8-.6c-.2-.1-.3-.3-.2-.4l.9-1.7c.6-1.2-.7-2.5-1.9-1.9l-1.7.9c-.1.1-.3 0-.4-.2l-.6-1.8c-.4-1.3-2.2-1.3-2.6 0l-.6 1.8c-.1.2-.3.3-.4.2l-1.7-.9c-1.2-.6-2.5.7-1.9 1.9l.9 1.7c.1.1 0 .3-.2.4l-1.8.6c-1.3.4-1.3 2.3 0 2.7l1.8.6c.2 0 .3.2.2.3l-.9 1.7c-.6 1.2.7 2.5 1.9 1.9l1.7-.9c.2-.1.4 0 .4.2l.6 1.8c.4 1.3 2.3 1.3 2.7 0l.6-1.8c.1-.2.3-.3.4-.2l1.7.9c1.2.6 2.5-.7 1.9-1.9l-1-1.7c-.1-.2 0-.4.2-.4l1.8-.6c1.3-.4 1.3-2.2 0-2.6zm-7 3.7c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z" fill="#CCC"></path>
-                            </svg> Interface definition <span class="badge badge-secondary lg-ts">TS</span>
-                        </h5>
-                        <pre><code class="typescript">interface Person {
-    fullName: string;
-    toString();
-}
-                        </code></pre>
-                        <hr />
-                        <p class="card-text">
-                            Simple interface definition.
-                            <footer class="blockquote-footer"><a href=# class="text-decoration-none">@roxxx8</a>
-                            </footer>
-                        </p>
-                        <a href="#" class="btn btn-primary btn-cpy">Copy</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4 masonry-column">
-                <div class="card card-block">
-                    <div class="card-body">
-                        <h5 class="card-title"><svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 6.675l-1.8-.6c-.2-.1-.3-.3-.2-.4l.9-1.7c.6-1.2-.7-2.5-1.9-1.9l-1.7.9c-.1.1-.3 0-.4-.2l-.6-1.8c-.4-1.3-2.2-1.3-2.6 0l-.6 1.8c-.1.2-.3.3-.4.2l-1.7-.9c-1.2-.6-2.5.7-1.9 1.9l.9 1.7c.1.1 0 .3-.2.4l-1.8.6c-1.3.4-1.3 2.3 0 2.7l1.8.6c.2 0 .3.2.2.3l-.9 1.7c-.6 1.2.7 2.5 1.9 1.9l1.7-.9c.2-.1.4 0 .4.2l.6 1.8c.4 1.3 2.3 1.3 2.7 0l.6-1.8c.1-.2.3-.3.4-.2l1.7.9c1.2.6 2.5-.7 1.9-1.9l-1-1.7c-.1-.2 0-.4.2-.4l1.8-.6c1.3-.4 1.3-2.2 0-2.6zm-7 3.7c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z" fill="#CCC"></path>
-                            </svg> Simple Thread <span class="badge badge-secondary lg-java">Java</span>
-                        </h5>
-                        <pre><code class="java">public class MyThread extends Thread {
-    public void run(){
-        System.out.println(&#x22;MyThread running&#x22;);
-    }
-}
-    
-MyThread myThread = new MyThread();
-myTread.start();
-                        </code></pre>
-                        <hr />
-                        <p class="card-text">
-                            A basic thread implementation.
-                            <footer class="blockquote-footer"><a href=# class="text-decoration-none">@javabien</a>
-                            </footer>
-                        </p>
-                        <a href="#" class="btn btn-primary btn-cpy">Copy</a>
-                    </div>
-                </div>
-                <div class="card card-block">
-                    <div class="card-body">
-                        <h5 class="card-title"><svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 6.675l-1.8-.6c-.2-.1-.3-.3-.2-.4l.9-1.7c.6-1.2-.7-2.5-1.9-1.9l-1.7.9c-.1.1-.3 0-.4-.2l-.6-1.8c-.4-1.3-2.2-1.3-2.6 0l-.6 1.8c-.1.2-.3.3-.4.2l-1.7-.9c-1.2-.6-2.5.7-1.9 1.9l.9 1.7c.1.1 0 .3-.2.4l-1.8.6c-1.3.4-1.3 2.3 0 2.7l1.8.6c.2 0 .3.2.2.3l-.9 1.7c-.6 1.2.7 2.5 1.9 1.9l1.7-.9c.2-.1.4 0 .4.2l.6 1.8c.4 1.3 2.3 1.3 2.7 0l.6-1.8c.1-.2.3-.3.4-.2l1.7.9c1.2.6 2.5-.7 1.9-1.9l-1-1.7c-.1-.2 0-.4.2-.4l1.8-.6c1.3-.4 1.3-2.2 0-2.6zm-7 3.7c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z" fill="#CCC"></path>
-                            </svg> Properties definition <span class="badge badge-secondary lg-csharp">C#</span>
-                        </h5>
-                        <pre><code class="csharp">public class SaleItem
-{
-   public string Name { get; set; }
-   public decimal Price { get; set; }
-}
-                        </code></pre>
-                        <hr />
-                        <p class="card-text">
-                            How to define properties.
-                            <footer class="blockquote-footer"><a href=# class="text-decoration-none">@skraken</a>
-                            </footer>
-                        </p>
-                        <a href="#" class="btn btn-primary btn-cpy">Copy</a>
-                    </div>
-                </div>
-                <div class="card card-block">
-                    <div class="card-body">
-                        <h5 class="card-title"><svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 6.675l-1.8-.6c-.2-.1-.3-.3-.2-.4l.9-1.7c.6-1.2-.7-2.5-1.9-1.9l-1.7.9c-.1.1-.3 0-.4-.2l-.6-1.8c-.4-1.3-2.2-1.3-2.6 0l-.6 1.8c-.1.2-.3.3-.4.2l-1.7-.9c-1.2-.6-2.5.7-1.9 1.9l.9 1.7c.1.1 0 .3-.2.4l-1.8.6c-1.3.4-1.3 2.3 0 2.7l1.8.6c.2 0 .3.2.2.3l-.9 1.7c-.6 1.2.7 2.5 1.9 1.9l1.7-.9c.2-.1.4 0 .4.2l.6 1.8c.4 1.3 2.3 1.3 2.7 0l.6-1.8c.1-.2.3-.3.4-.2l1.7.9c1.2.6 2.5-.7 1.9-1.9l-1-1.7c-.1-.2 0-.4.2-.4l1.8-.6c1.3-.4 1.3-2.2 0-2.6zm-7 3.7c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z" fill="#CCC"></path>
-                            </svg> Group by Query <span class="badge badge-secondary lg-sql">SQL</span>
-                        </h5>
-                        <pre><code class="sql">SELECT SUBJECT, YEAR, Count(*)
-FROM Student
-GROUP BY SUBJECT, YEAR;
-                        </code></pre>
-                        <hr />
-                        <p class="card-text">
-                            Group by example.
-                            <footer class="blockquote-footer"><a href=# class="text-decoration-none">@ssqqll</a>
-                            </footer>
-                        </p>
-                        <a href="#" class="btn btn-primary btn-cpy">Copy</a>
-                    </div>
-                </div>
+                <?php
+                }
+                ?>
             </div>
         </div>
     </div>
