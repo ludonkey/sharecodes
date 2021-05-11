@@ -1,45 +1,15 @@
 <?php
 
-require "../vendor/autoload.php";
-
 use Entity\Code;
-use Entity\User;
-use Entity\Language;
+use ludk\Persistence\ORM;
 
-$userToto = new User();
-$userToto->id = 1;
-$userToto->nickname = "toto";
-$userToto->password = "pwd1";
+require __DIR__ . '/../vendor/autoload.php';
 
-$langPHP = new Language();
-$langPHP->id = 1;
-$langPHP->code = "PHP";
+$orm = new ORM(__DIR__ . '/../Resources');
 
-$code1 = new Code();
-$code1->id = 1;
-$code1->desc = "Helloword in PHP";
-$code1->content = 'echo "Hello"';
-$code1->created_at = "2021-05-10 14:49:00";
-$code1->user = $userToto;
-$code1->language = $langPHP;
+$codeRepo = $orm->getRepository(Code::class);
 
-$code2 = new Code();
-$code2->id = 2;
-$code2->desc = "Goodbye in PHP";
-$code2->content = 'echo "Bye"';
-$code2->created_at = "2021-05-10 14:49:00";
-$code2->user = $userToto;
-$code2->language = $langPHP;
-
-$code3 = new Code();
-$code3->id = 3;
-$code3->desc = "What in PHP";
-$code3->content = 'echo "What";';
-$code3->created_at = "2021-05-10 14:49:00";
-$code3->user = $userToto;
-$code3->language = $langPHP;
-
-$items = [$code1, $code2, $code3, $code1, $code2, $code3, $code1, $code2, $code3, $code1, $code2, $code3];
+$items = $codeRepo->findAll();
 
 ?>
 <!DOCTYPE html>

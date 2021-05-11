@@ -2,6 +2,8 @@
 
 namespace Entity;
 
+use ludk\Utils\Serializer;
+
 class Code
 {
     public $id;
@@ -11,4 +13,6 @@ class Code
     public $created_at;
     public Language $language;
     public User $user;
+
+    use Serializer;
 }
