@@ -80,7 +80,9 @@ $items = [$code1, $code2, $code3, $code1, $code2, $code3, $code1, $code2, $code3
         <div class="row masonry-grid">
             <div class="col-md-6 col-lg-4 masonry-column">
                 <?php
-                foreach ($items as $oneItem) {
+                $nbElementByLine = count($items) / 3;
+                for ($i = 0; $i < count($items);) {
+                    $oneItem = $items[$i];
                 ?>
                     <div class="card card-block">
                         <div class="card-body">
@@ -96,8 +98,11 @@ $items = [$code1, $code2, $code3, $code1, $code2, $code3, $code1, $code2, $code3
                             <a href="#" class="btn btn-primary btn-cpy">Copy</a>
                         </div>
                     </div>
-
                 <?php
+                    $i++;
+                    if ($i % $nbElementByLine == 0) {
+                        echo '</div><div class="col-md-6 col-lg-4 masonry-column">';
+                    }
                 }
                 ?>
             </div>
