@@ -2,21 +2,29 @@
     {
         "id":1,
         "nickname":"eric",
-        "password":"toto"
+        "password":"toto",
+        "urlPhoto": "https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_960_720.jpg",
+        "age": 18
     },
     {
         "id":2,
         "nickname":"jpp",
-        "password":"toto"
+        "password":"toto",
+        "urlPhoto": "https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_960_720.jpg",
+        "age": 28
     },
     {
         "id":3,
         "nickname":"jc",
-        "password":"toto"
+        "password":"toto",
+        "urlPhoto": "https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_960_720.jpg",
+        "age": 38
     },
     {
         "id":4,
         "nickname":"tutu",
-        "password":"toto"
+        "password":"toto",
+        "urlPhoto": "https://cdn.pixabay.com/photo/2017/11/09/21/41/cat-2934720_960_720.jpg",
+        "age": 48
     }
 ]

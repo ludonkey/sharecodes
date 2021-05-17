@@ -1,15 +1,42 @@
 <?php
 
 use Entity\Code;
+use Entity\User;
+use Entity\Language;
 use ludk\Persistence\ORM;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+session_start();
+
 $orm = new ORM(__DIR__ . '/../Resources');
 
-$codeRepo = $orm->getRepository(Code::class);
+$manager = $orm->getManager();
 
-$items = $codeRepo->findAll();
+$codeRepo = $orm->getRepository(Code::class);
+$userRepo = $orm->getRepository(User::class);
+$langRepo = $orm->getRepository(Language::class);
+
+$codes = [];
+
+if (isset($_GET["search"])) {
+    $strToSearch = $_GET["search"];
+    $posOfTheAtCharacter = strpos($strToSearch, "@");
+
+    if ($posOfTheAtCharacter === 0) {
+        $userName = substr($strToSearch, 1);
+        $users = $userRepo->findBy(array("nickname" => $userName));
+        if (count($users) == 1) {
+            $codes = $codeRepo->findBy(array("user" => $users[0]->id));
+        }
+    } else {
+        $codes = $codeRepo->findBy(
+            array("desc" => "%$strToSearch%")
+        );
+    }
+} else {
+    $codes = $codeRepo->findAll();
+}
 
 ?>
 <!DOCTYPE html>
@@ -37,8 +64,8 @@ $items = $codeRepo->findAll();
                 <ul class="navbar-nav mr-auto">
 
                 </ul>
-                <form class="form-inline my-2 my-md-0" action="/search" id="search-form">
-                    <input class="form-control" type="text" name="search" placeholder="Search" aria-label="Search">
+                <form action="/">
+                    <input type="text" name="search" placeholder="Search">
                 </form>
                 <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" id="login-btn">Log in</a>
                 <a href="#" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true" id="signup-btn">Sign up</a>
@@ -50,27 +77,32 @@ $items = $codeRepo->findAll();
         <div class="row masonry-grid">
             <div class="col-md-6 col-lg-4 masonry-column">
                 <?php
-                $nbElementByLine = count($items) / 3;
-                for ($i = 0; $i < count($items);) {
-                    $oneItem = $items[$i];
+                $nbElementByLine = ceil(count($codes) / 3);
+                for ($i = 0; $i < count($codes);) {
+                    $oneItem = $codes[$i];
                 ?>
                     <div class="card card-block">
                         <div class="card-body">
                             <h5 class="card-title"><svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M15 6.675l-1.8-.6c-.2-.1-.3-.3-.2-.4l.9-1.7c.6-1.2-.7-2.5-1.9-1.9l-1.7.9c-.1.1-.3 0-.4-.2l-.6-1.8c-.4-1.3-2.2-1.3-2.6 0l-.6 1.8c-.1.2-.3.3-.4.2l-1.7-.9c-1.2-.6-2.5.7-1.9 1.9l.9 1.7c.1.1 0 .3-.2.4l-1.8.6c-1.3.4-1.3 2.3 0 2.7l1.8.6c.2 0 .3.2.2.3l-.9 1.7c-.6 1.2.7 2.5 1.9 1.9l1.7-.9c.2-.1.4 0 .4.2l.6 1.8c.4 1.3 2.3 1.3 2.7 0l.6-1.8c.1-.2.3-.3.4-.2l1.7.9c1.2.6 2.5-.7 1.9-1.9l-1-1.7c-.1-.2 0-.4.2-.4l1.8-.6c1.3-.4 1.3-2.2 0-2.6zm-7 3.7c-1.3 0-2.4-1.1-2.4-2.4 0-1.3 1.1-2.4 2.4-2.4 1.3 0 2.4 1.1 2.4 2.4 0 1.3-1.1 2.4-2.4 2.4z" fill="#CCC"></path>
-                                </svg><span class="badge badge-secondary lg-cpp"><?= $oneItem->language->code ?></span></h5>
-                            <pre><code class="cpp"><?= $oneItem->content ?></code></pre>
+                                </svg>
+                                <?= htmlentities($oneItem->title) ?>
+                                <span class="badge badge-secondary lg-cpp"><?= strtoupper(htmlentities($oneItem->language->code)) ?></span>
+                            </h5>
+                            <pre><code class="cpp"><?= htmlentities($oneItem->content) ?></code></pre>
                             <hr />
                             <p class="card-text">
-                                <?= $oneItem->desc ?>
-                            <footer class="blockquote-footer"><a href=# class="text-decoration-none">@<?= $oneItem->user->nickname ?></a></footer>
+                                <?= htmlentities($oneItem->desc) ?>
+                            <footer class="blockquote-footer">
+                                <a href="?search=@<?= htmlentities($oneItem->user->nickname) ?>" class="text-decoration-none">@<?= htmlentities($oneItem->user->nickname) ?></a>
+                            </footer>
                             </p>
                             <a href="#" class="btn btn-primary btn-cpy">Copy</a>
                         </div>
                     </div>
                 <?php
                     $i++;
-                    if ($i % $nbElementByLine == 0) {
+                    if ($nbElementByLine > 0 && $i % $nbElementByLine == 0) {
                         echo '</div><div class="col-md-6 col-lg-4 masonry-column">';
                     }
                 }
