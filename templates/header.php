@@ -31,6 +31,13 @@
                 <ul class="navbar-nav mr-auto">
 
                 </ul>
+                <?php
+                if (isset($_SESSION['user'])) {
+                ?>
+                    <a href="?action=new" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true" id="signup-btn">New Code</a>
+                <?php
+                }
+                ?>
                 <form action="/">
                     <input type="text" name="search" placeholder="Search">
                 </form>
