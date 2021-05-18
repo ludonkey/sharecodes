@@ -22,8 +22,29 @@ switch ($action) {
     case 'register':
         break;
     case 'logout':
+        if (isset($_SESSION['user'])) {
+            unset($_SESSION['user']);
+        }
+        header('Location: ?action=display');
         break;
+
     case 'login':
+        if (isset($_POST['username']) && isset($_POST['password'])) {
+            $criteriaWithloginAndPawword = [
+                "nickname" => $_POST['username'],
+                "password" => $_POST['password']
+            ];
+            $usersWithThisNicknameAndPassword = $userRepo->findBy($criteriaWithloginAndPawword);
+            if (count($usersWithThisNicknameAndPassword) == 1) {
+                $_SESSION['user'] = $usersWithThisNicknameAndPassword[0];
+                header('Location: ?action=display');
+            } else {
+                $errorMsg = "Wrong login and/or password.";
+                include "../templates/LoginForm.php";
+            }
+        } else {
+            include "../templates/LoginForm.php";
+        }
         break;
     case 'new':
         break;
