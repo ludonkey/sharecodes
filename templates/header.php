@@ -14,7 +14,15 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class=" container">
-            <a class="navbar-brand" href="#">[[ ShareCode ]]</a>
+            <a class="navbar-brand" href="/">[[ ShareCode ]]</a>
+            <?php
+            if (isset($_SESSION['user'])) {
+            ?>
+                >>> You are logged as&nbsp;<b><?= $_SESSION['user']->nickname  ?></b>
+            <?php
+            }
+            ?>
+
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
