@@ -24,4 +24,12 @@ class AuthController
             include "../templates/LoginForm.php";
         }
     }
+
+    public function logout()
+    {
+        if (isset($_SESSION['user'])) {
+            unset($_SESSION['user']);
+        }
+        header('Location: ?action=display');
+    }
 }

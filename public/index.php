@@ -53,10 +53,8 @@ switch ($action) {
         }
         break;
     case 'logout':
-        if (isset($_SESSION['user'])) {
-            unset($_SESSION['user']);
-        }
-        header('Location: ?action=display');
+        $controller = new AuthController();
+        $controller->logout();
         break;
 
     case 'login':
