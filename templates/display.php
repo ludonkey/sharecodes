@@ -1,6 +1,4 @@
-<?php
-include __DIR__ . "/header.php";
-?>
+{% include "/header.php" %}
 <div class="row masonry-grid">
     <div class="col-md-6 col-lg-4 masonry-column">
         <?php
@@ -36,6 +34,4 @@ include __DIR__ . "/header.php";
         ?>
     </div>
 </div>
-<?php
-include __DIR__ . "/footer.php";
-?>
+{% include "/footer.php" %}

@@ -3,48 +3,59 @@
 namespace Controller;
 
 use Entity\Code;
+use Entity\Language;
+use ludk\Http\Request;
+use ludk\Controller\AbstractController;
+use ludk\Http\Response;
 
-class ContentController
+class ContentController extends AbstractController
 {
-    function create()
+    function create(Request $request): Response
     {
-        global $langRepo;
-        global $manager;
+        $langRepo = $this->getOrm()->getRepository(Language::class);
+        $manager = $this->getOrm()->getManager();
         $languages = $langRepo->findAll();
         if (
-            isset($_SESSION['user'])
-            && isset($_POST['title'])
-            && isset($_POST['desc'])
-            && isset($_POST['content'])
-            && isset($_POST['languageId'])
+            $request->getSession()->has('user')
+            && $request->request->has('title')
+            && $request->request->has('desc')
+            && $request->request->has('content')
+            && $request->request->has('languageId')
         ) {
             $errorMsg = NULL;
-            if (strlen(trim($_POST['title'])) < 2) {
+            if (strlen(trim($request->request->get('title'))) < 2) {
                 $errorMsg = "Your title should have at least 2 characters.";
-            } else if (strlen(trim($_POST['desc'])) < 2) {
+            } else if (strlen(trim($request->request->get('desc'))) < 2) {
                 $errorMsg = "Your desc should have at least 2 characters.";
-            } else if (strlen(trim($_POST['content'])) == 0) {
+            } else if (strlen(trim($request->request->get('content'))) == 0) {
                 $errorMsg = "Your content shouldn't be empty.";
-            } else if (intval($_POST['languageId']) == 0) {
+            } else if (intval($request->request->get('languageId')) == 0) {
                 $errorMsg = "You should choose a language.";
             }
             if ($errorMsg) {
-                include "../templates/CreateForm.php";
+                $data = array(
+                    "errorMsg" => $errorMsg,
+                    "languages" => $languages
+                );
+                return $this->render("CreateForm.php", $data);
             } else {
-                $language = $langRepo->find($_POST['languageId']);
+                $language = $langRepo->find($request->request->get('languageId'));
                 $newCode = new Code();
-                $newCode->title = trim($_POST['title']);
-                $newCode->desc = trim($_POST['desc']);
-                $newCode->content = trim($_POST['content']);
+                $newCode->title = trim($request->request->get('title'));
+                $newCode->desc = trim($request->request->get('desc'));
+                $newCode->content = trim($request->request->get('content'));
                 $newCode->created_at = date("Y-m-d H:i:s");
                 $newCode->language = $language;
-                $newCode->user = $_SESSION['user'];
+                $newCode->user = $request->getSession()->get("user");
                 $manager->persist($newCode);
                 $manager->flush();
-                header('Location: /display');
+                return $this->redirectToRoute("display");
             }
         } else {
-            include "../templates/CreateForm.php";
+            $data = array(
+                "languages" => $languages
+            );
+            return $this->render("CreateForm.php", $data);
         }
     }
 }

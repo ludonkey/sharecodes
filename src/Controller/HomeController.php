@@ -2,15 +2,21 @@
 
 namespace Controller;
 
-class HomeController
+use Entity\Code;
+use Entity\User;
+use ludk\Http\Request;
+use ludk\Http\Response;
+use ludk\Controller\AbstractController;
+
+class HomeController extends AbstractController
 {
-    public function display()
+    public function display(Request $request): Response
     {
-        global $userRepo;
-        global $codeRepo;
+        $userRepo = $this->getOrm()->getRepository(User::class);
+        $codeRepo = $this->getOrm()->getRepository(Code::class);
         $codes = [];
-        if (isset($_GET["search"])) {
-            $strToSearch = $_GET["search"];
+        if ($request->query->has("search")) {
+            $strToSearch = $request->query->get("search");
             $posOfTheAtCharacter = strpos($strToSearch, "@");
 
             if ($posOfTheAtCharacter === 0) {
@@ -27,6 +33,9 @@ class HomeController
         } else {
             $codes = $codeRepo->findAll();
         }
-        include "../templates/display.php";
+        $data = array(
+            "codes" =>  $codes
+        );
+        return $this->render("display.php", $data);
     }
 }
