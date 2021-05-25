@@ -41,7 +41,7 @@ class ContentController
                 $newCode->user = $_SESSION['user'];
                 $manager->persist($newCode);
                 $manager->flush();
-                header('Location: ?action=display');
+                header('Location: /display');
             }
         } else {
             include "../templates/CreateForm.php";

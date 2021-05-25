@@ -20,7 +20,8 @@ $codeRepo = $orm->getRepository(Code::class);
 $userRepo = $orm->getRepository(User::class);
 $langRepo = $orm->getRepository(Language::class);
 
-$action = $_GET["action"] ?? "display";
+$action = substr(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), 1);
+
 switch ($action) {
     case 'register':
         $controller = new AuthController();
